@@ -1,1 +1,1 @@
-# This repo is store my Deep Learning stuff
+# Repo created to store code that I wrote while learning Deep Learning
