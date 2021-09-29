@@ -1,1 +1,6 @@
-# Repo created to store code that I wrote while learning Deep Learning
+# Deep Learning models written in PyTorch
+
+- Basic PyTorch
+- Computer Vision
+- Natural Language Processing
+- Research Papers Implementation
