@@ -1,4 +1,4 @@
-# Deep Learning models written in PyTorch
+# Deep Learning
 
 - Basic PyTorch
 - Computer Vision
@@ -6,3 +6,4 @@
 - Research Papers Implementation
 - Deep Learning Specialization
 - Deep Learning with PyTorch
+- Tensorflow tutorial
