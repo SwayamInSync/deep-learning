@@ -432,3 +432,28 @@ cv2.waitKey(0)
 
 ### **<u>Thresholding and Binarization</u>**
 
+```python
+from cv2 import imshow, imread, cvtColor
+import cv2 as cv
+import numpy as np
+import matplotlib.pyplot as plt
+img = imread("./Resources/Photos/cats.jpg")
+gray = cvtColor(img, cv.COLOR_BGR2GRAY)
+
+# simple threshold
+threshold, thresh = cv.threshold(gray, thresh=150, maxval=255, type=cv.THRESH_BINARY)
+imshow('simple threshold', thresh)
+
+threshold_inv, thresh_inv = cv.threshold(gray, thresh=150, maxval=255, type=cv.THRESH_BINARY_INV)
+imshow('simple threshold inverse', thresh_inv)
+
+# adaptive threshold
+
+adaptive_thresh = cv.adaptiveThreshold(gray, maxValue=255, adaptiveMethod=cv.ADAPTIVE_THRESH_MEAN_C, thresholdType=cv.THRESH_BINARY, blockSize=11, C=3)
+imshow('adaptive thresh', adaptive_thresh)
+
+# blockSize := kernel size parameter for calculating the mean of certain portion
+# C := amount that will get subtracted from the mean after mean calculation for certain portion
+
+cv.waitKey(0)
+```
