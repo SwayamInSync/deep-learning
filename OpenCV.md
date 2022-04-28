@@ -390,3 +390,45 @@ cv.waitKey(0)
 
 ### **<u>Histogram Computation</u>**
 
+```python
+import cv2
+from cv2 import imshow, imread, cvtColor
+import cv2 as cv
+import numpy as np
+import matplotlib.pyplot as plt
+img = imread("./Resources/Photos/cats.jpg")
+gray = cvtColor(img, cv.COLOR_BGR2GRAY)
+
+# Graycale histogram
+gray_hist = cv.calcHist([gray], [0], histSize=[256], ranges=[0,256], mask=None)
+# pass mask parameter similar to masking to get histogram of specific area
+plt.figure()
+plt.title("Grayscale Histogram")
+plt.xlabel("bins")
+plt.ylabel("number of pixels")
+plt.xlim(0,256)
+plt.plot(gray_hist)
+plt.show()
+
+# color histogram
+colors = ('b', 'g', 'r')
+plt.figure()
+plt.title("Grayscale Histogram")
+plt.xlabel("bins")
+plt.ylabel("number of pixels")
+blank = np.zeros(img.shape[:2], dtype='uint8')
+mask = cv.circle(blank, (img.shape[1]//2, img.shape[0]//2), radius=100, color=255, thickness=-1)
+masked = cv.bitwise_and(img, img, mask=mask)
+imshow('masked', masked)
+for i, color in enumerate(colors):
+    hist = cv.calcHist([img], [i], mask=mask, histSize=[256], ranges=[0,256])
+    plt.plot(hist, color=color, label=color)
+    plt.xlim(0, 256)
+plt.legend()
+plt.show()
+
+cv2.waitKey(0)
+```
+
+### **<u>Thresholding and Binarization</u>**
+
