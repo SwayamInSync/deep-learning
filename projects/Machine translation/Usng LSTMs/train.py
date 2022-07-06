@@ -41,7 +41,7 @@ optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 total_val_loss = 0
 for epoch in range(1, num_epochs+1):
-    train_loop = tqdm(enumerate(train_loader), total=len(train_loader), leave=True)
+    train_loop = tqdm(enumerate(train_loader), total=len(train_loader), leave=False)
     train_loss = 0
     model.train()
     for batch_idx, (french, english) in train_loop:
@@ -63,7 +63,7 @@ for epoch in range(1, num_epochs+1):
     model.eval()
     with torch.inference_mode():
         val_loss = 0
-        val_loop = tqdm(val_loader, total=len(val_loader), leave=True)
+        val_loop = tqdm(val_loader, total=len(val_loader), leave=False)
         for french, english in val_loop:
             french = french.to(device)
             english = english.to(device)
