@@ -13,8 +13,11 @@ class Encoder(nn.Module):
         self.lstm = nn.LSTM(embedding_size, hidden_size, num_layers, dropout=p)
 
     def forward(self, x):
+        print("input shape: ", x.shape, self.embedding)
         embedding = self.dropout(self.embedding(x))
+        print("embedding shape: ", embedding.shape)
         output, (hidden, cell) = self.lstm(embedding)
+        print("output shape: ", output.shape, hidden.shape, cell.shape)
         return hidden, cell
 
 
@@ -29,8 +32,11 @@ class Decoder(nn.Module):
         self.fc = nn.Linear(hidden_size, output_size)
 
     def forward(self, x, hidden, cell):
+        # since x is only one word so need to add extra dimension of 1
+        # x.shape: (1, batch_size)
         x = x.unsqueeze(0)
         embedding = self.dropout(self.embedding(x))
+        # embedding.shape: (1, batch_size, 300)
         output, (hidden, cell) = self.lstm(embedding, (hidden, cell))
         predictions = self.fc(output)
         predictions = predictions.squeeze(0)
@@ -48,15 +54,15 @@ class Seq2Seq(nn.Module):
     def forward(self, source, target, teacher_force_ratio=0.5):
         batch_size = source.shape[1]
         target_len = target.shape[0]
+        # picking 0s because in vocab 0 stands for <PAD> to pad the remaining length
         outputs = torch.zeros(
             (target_len, batch_size, self.eng_vocab_size)).to(self.device)
         hidden, cell = self.encoder(source)
         x = target[0]
-        print(x)
         for t in range(1, target_len):
             output, hidden, cell = self.decoder(x, hidden, cell)
             outputs[t] = output
-            best_guess = output.argmax(1)
+            best_guess = output.argmax(1)  # returns index of maximum value
             x = target[t] if random.random(
             ) < teacher_force_ratio else best_guess
         return outputs
